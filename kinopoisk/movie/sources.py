@@ -252,9 +252,7 @@ class MovieMainPage(KinopoiskPage):
         self.content = html.fromstring(self.content)
 
         self.instance.id = self.prepare_int(self.extract('url').split('/')[-2].split('-')[-1])
-        print(self.instance.title)
         self.instance.title = self.extract('title', to_str=True)
-        print(self.instance.title)
         self.instance.title_en = self.extract('title_en', to_str=True)
         self.instance.plot = self.extract('plot', to_str=True)
         self.instance.rating = self.extract('rating', to_float=True)
