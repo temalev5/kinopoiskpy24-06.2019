@@ -74,7 +74,7 @@ class MoviePremierLink(KinopoiskPage):
         else:
             content_soup = BeautifulSoup(self.content, 'html.parser')
             premier_soup = content_soup.find('div', {'class': 'premier_item'})
-
+        #print(str(premier_soup))
         title_soup = premier_soup.find('span', {'class': 'name_big'}) or premier_soup.find('span', {'class': 'name'})
 
         self.instance.id = self.prepare_int(premier_soup['id'])
@@ -198,12 +198,12 @@ class MovieMainPage(KinopoiskPage):
 
     xpath = {
         'url': './/meta[@property="og:url"]/@content',
-        'title': './/h1/text()',
+        'title': './/h1/span/text()',
         'title_en': './/span[@itemprop="alternativeHeadline"]/text()',
         'plot': './/div[@itemprop="description"]/text()',
         'rating': './/span[@class="rating_ball"]/text()',
         'votes': './/div[@id="block_rating"]//div[@class="div1"]//span[@class="ratingCount"]/text()',
-        'imdb': './/div[@id="block_rating"]//div[@class="block_2"]//div[last()]/text()',
+        'imdb': './/div[@id="block_rating"]//div[@class="block_2"]//div[last()-1]/text()',
     }
 
     def parse(self):
@@ -252,7 +252,9 @@ class MovieMainPage(KinopoiskPage):
         self.content = html.fromstring(self.content)
 
         self.instance.id = self.prepare_int(self.extract('url').split('/')[-2].split('-')[-1])
+        print(self.instance.title)
         self.instance.title = self.extract('title', to_str=True)
+        print(self.instance.title)
         self.instance.title_en = self.extract('title_en', to_str=True)
         self.instance.plot = self.extract('plot', to_str=True)
         self.instance.rating = self.extract('rating', to_float=True)
